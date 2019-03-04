@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-UK">
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="stylesheet" href="css/ui.css" type="text/css" />
+   <script src="js/ui.js"></script>
+</head>
+<body>
+<header>
+<h1>Example page</h1>
+<h2>Sub-heading</h2>
+<aside>
+	<div class="popup-menu-trigger">
+		<a id="myaccount-link" href="#myaccount">My account</a>
+		<ul class="popup-menu-content">
+			<li id="myaccount-name"><a href="#myaccount-summary">My account</a></li>
+			<li id="myaccount-name"><a href="#myaccount-eul">Change contact details</a></li>
+			<li id="myaccount-name"><a href="#myaccount-logout">Log out</a></li>
+		</ul>
+	</div>
+	<a style="color: #111;" href="mailto:" title="support@">@</a>
+	<a href="#contact" title="Call the helpdesk (Mon-Fri 9am to 5pm)">☎ 0123 456 7890</a>
+</aside>
+</header>
+<nav>
+	<ul>
+		<li><a href="#link1">Home</a></li>
+		<li class="popup-menu-trigger"><a href="#link2">Example 1</a>
+			<ul class="popup-menu-content">
+				<li><a href="#link2.1">Sub-item 1</a></li>
+				<li><a href="#link2.2">Sub-item 2</a></li>
+			</ul>
+		</li>
+		<li class="active"><a href="#link3">Example 2</a></li>
+		<li><a href="#link4">Need help?</a></li>
+	</ul>
+</nav>
+  
+<nav id="breadcrumbs" class="breadcrumb"></nav>
+
+<main role="main">
+	<section>
+		<h1>Example page heading</h1>
+		<h2>Sub heading text</h2>
+		<div id="testbox"></div>
+		<div id="testbox2"></div>
+	</section>
+	<h2>Section with figures (h2)</h2>
+	<section>
+		<figure>
+			var i = 0;
+			<figcaption>Some example code</figcaption>
+		</figure>
+		<aside>
+			This is a <mark>test</mark> page.
+		</aside>
+	</section>
+	<h1>This is a heading (H1)</h1>
+	<h2>This is another sub heading (H2)</h2>
+	<div id="jtab"></div>
+</main>
+<footer>
+Test page footer - please note <time datetime="2017-06-14 13:50">downtime on 14th June at 13:50</time>.
+</footer>
+<script>
+	var crumbs = [
+		{ href: '#bc1', title: 'Level 1' },
+		{ href: '#bc2', title: 'Level 2' },
+		{ href: '#bc3', title: 'Level 3' },
+		{ href: '#bc4', title: 'Level 4' },
+		{ href: '#bc5', title: 'This page' }
+	];
+
+	document.getElementById('breadcrumbs').appendChild(nomisUI.breadcrumbs(crumbs));
+
+	var cbi = 0;
+	var list = [
+			{ n : "Aged 16-21", v : "1", d: "This is a description of an entry" },
+			{ n : "Aged 22-25", v : "3" },
+			{ n : "Aged 26-30", v : "5" },
+			{ n : "Aged 31-35", v : "2", checked: true },
+			{ n : "Aged 36-41", v : "4" },
+			{ n : "Aged 41-55", v : "6" },
+			{ n : "Aged 55 and over", v : "7" },
+		];
+	
+	sessionStorage.forename = 'Justin';
+	
+	var t = document.getElementById('testbox');
+	document.getElementById('myaccount-link').innerHTML = sessionStorage.forename;
+	
+	var ul = nomisUI.orderedlist({ classname: 'controls' });
+	t.appendChild(ul);
+	
+	list.map(function(obj, idx, arr) {
+		var cb = nomisUI.checkbox({
+			label: obj.n,
+			value: obj.v,
+			checked: obj.checked,
+			details: (obj.d)? { summary: 'More info...', content: obj.d } : null,
+			onchange: function(event) {
+				sessionStorage.lastTick = ((event || window.event).target.value);
+			}
+		});
+		
+		nomisUI.listadd(this, nomisUI.listitem({ content: cb }));
+	}, ul);
+	
+	var buttonexamples = [
+		{ label: 'Positive', classname: 'positive' },
+		{ label: 'General' },
+		{ label: 'Neutral', classname: 'neutral' },
+		{ label: 'Negative', classname: 'negative' },
+		{ label: 'Disabled', classname: 'negative', disabled: true }
+	];
+	
+	nomisUI.wraplist(t, buttonexamples, function(entry) { return nomisUI.button(entry); });
+	
+	var t2 = document.getElementById('testbox2');
+	var list2 = [
+			{ n : "Nulla quis sem at nibh", v : "This is a description of an entry" },
+			{ n : "Mauris massa", v : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet." },
+			{ n : "Curabitur sodales", v : "Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla." },
+			{ n : "Sed cursus ante dapibus", v : "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos." },
+			{ n : "Lorem ipsum dolor", v : "Curabitur sodales ligula in libero. Sed dignissim lacinia nunc." }
+		];
+	
+	list2.map(function(obj, idx, arr) {
+		this.appendChild(nomisUI.article({
+			heading: obj.n,
+			content: obj.v
+		}));
+	}, t2);
+
+	
+	var revlist = [
+		nomisUI.button({ label: 'Copy', classname: 'neutral' }),
+		nomisUI.button({ label: 'Delete', classname: 'negative' }),
+		nomisUI.inputtext({ placeholder: 'Enter a name...' }),
+		nomisUI.button({ label: 'Rename', classname: 'positive' })
+	]
+	
+	t2.appendChild(nomisUI.reveal({
+		labelClosed: '>',
+		labelOpened: '<',
+		classname: 'revealer',
+		classnameOpened: 'opened',
+		classnameClosed: 'closed',
+		content: nomisUI.wraplist('div', revlist)
+	}));
+	
+	t2.appendChild(nomisUI.select({
+		label: 'Select an option',
+		list: [
+			{ label: 'Option 1', value: '1' },
+			{ label: 'Option 2', value: '2' },
+			{ label: 'Option 3', value: '3' },
+			{ label: 'Option 4', value: '4' },
+			{ label: 'Option 5', value: '5' },
+			{ label: 'Option 6', value: '6' },
+			{ label: 'Option 7', value: '7' }
+		]
+	}));
+	
+	t2.appendChild(nomisUI.inputsearch({ placeholder: 'Search the site...' }));
+	t2.appendChild(nomisUI.button({ label: 'Go', classname: 'positive' }));
+	
+	t2.appendChild(nomisUI.tree({
+		classname: 'tree',
+		children: [
+			{
+				content: nomisUI.alink({ href: '#tree1', label: 'Tree node 1' }),
+				children: [
+					{
+						autoExpand: false,
+						content: nomisUI.alink({ href: '#tree1.1', label: 'Tree node 1.1' }),
+						children: function(callback) {
+							var c = callback;
+							setTimeout(function() { c(
+									[
+										{ content: nomisUI.checkbox({ value: '#tree1.1.1', label: 'Tree node 1.1.1' }) },
+										{ content: nomisUI.checkbox({ value: '#tree1.1.2', label: 'Tree node 1.1.2' }) },
+										{ content: nomisUI.checkbox({ value: '#tree1.1.3', label: 'Tree node 1.1.3' }) },
+										{ content: nomisUI.wraplist('span', [
+											nomisUI.checkbox({ value: '#tree1.1.4', label: 'Tree node 1.1.4' }),
+											nomisUI.inputsearch({ placeholder: 'Remove a favourite...' }),
+											nomisUI.button({ label: 'Erase', classname: 'neutral' })
+										]) }
+									]
+								); }, 2000); // Add a spoofed delay to simulate AJAX call.
+						}
+					}
+				]
+			},
+			{ content: nomisUI.alink({ href: '#tree2', label: 'Tree node 2' }) },
+			{ content: nomisUI.alink({ href: '#tree3', label: 'Tree node 3' }) }
+		]
+	}));
+	
+	var l = nomisUI.orderedlist({ classname: 'controls' });
+	t.appendChild(l);
+	
+	list.map(function(obj, idx, arr) {
+		var radiobtn = nomisUI.radio({
+			label: obj.n,
+			value: obj.v,
+			checked: obj.checked,
+			name: 'ageradios',
+			details: (obj.d)? { summary: 'More info...', content: obj.d } : null,
+			onchange: function(event) {
+				sessionStorage.lastTick = ((event || window.event).target.value);
+			}
+		});
+		
+		nomisUI.listadd(this, nomisUI.listitem({ content: radiobtn }));
+	}, l);
+	
+	document.getElementById('jtab').appendChild(nomisUI.table({
+			id: 'tab1',
+			summary: 'Table example showing some random figures.',
+			caption: 'This is a table caption',
+			unit: { content: 'Jobs' },
+			columns: [
+				{
+					label: 'Column 1',
+					columns: [
+						{ label: 'Value' },
+						{ label: 'Percent' }
+					]
+				},
+				{
+					label: 'Column 2',
+					flag: '2',
+					columns: [
+						{ label: 'Value' },
+						{ label: 'Percent' }
+					]
+				},
+				{ label: 'Column 3' }
+			],
+			rowheading: 'Row heading',
+			data: [
+				{ label: 'Row title 1', values: [ 32.1, 6.1, 5.3, 5.4, 36.2 ] },
+				{ label: 'Row title 2', values: [ 1.3, 15.2, 43.4, 15.4, 3.2 ] },
+				{ label: 'Row title 3', values: [ 111.1, { value: 2.4, flag: '1' }, 48.8, 1.4, 35.2 ] },
+				{ label: 'Row title 4', values: [ 13.1, 45.4, { value: 4.4, flag: '!' }, 55.5, 35.2 ] },
+				{ label: 'Row title 5', values: [ 71.1, 52.4, 74.4, 1.1, 63.2 ] }
+			],
+			source: 'Random data (June 2017)',
+			flags: [
+				{ flag: '!', trigger: function(value) { if(value < 13) return true; }, content: 'These figures are low for this period and cannot be included in the count for December' },
+				{ flag: '-', trigger: '-', content: 'These figures are missing' },
+				{ flag: '1', content: 'Does not include those aged 1-15' },
+				{ flag: '2', content: 'This flag is attached to a column heading' }
+			],
+			footnotes: [
+				'A footnote message goes here.'
+			]
+		}));
+	
+	document.getElementById('jtab').appendChild(nomisUI.table({
+			summary: 'Table example showing some random figures with some click events and highlighted figures.',
+			caption: 'Table with some highlighted figures and click events',
+			columns: [
+				{
+					label: 'Column 1',
+					columns: [
+						{ label: 'Value', onclick: function() { window.alert('clicked a specific column heading'); } },
+						{ label: 'Percent' }
+					]
+				},
+				{
+					label: 'Column 2',
+					id: 'myid',
+					columns: [
+						{ label: 'Value' },
+						{ label: 'Percent' }
+					]
+				},
+				{ label: 'Column 3' }
+			],
+			data: [
+				{ label: 'Row title 1', values: [ 32.1, 6.1, 5.3, 5.4, 36.2 ] },
+				{ label: [ 'Row title 2', 'Sub row 1' ], classname: 'divider-light', values: [ 1.3, { value: 15.2, onclick: function() { window.alert('clicked a specific figure'); } }, 43.4, 15.4, 3.2 ] },
+				{ label: [ 'Row title 2', 'Sub row 2' ], values: [ 111.1, 2.4, { value: 48.8, classname: 'positive' }, 1.4, 35.2 ] },
+				{ label: 'Row title 4', classname: 'divider-medium', values: [ { value: 13.1, classname: 'negative' }, 45.4, 4.4, 55.5, 35.2 ] },
+				{ label: [ 'Row title 4', 'Sub row 3' ], values: [ 71.1, 52.4, 74.4, 1.1, 63.2 ] },
+				{ label: [ 'Row title 4', 'Sub row 4' ], values: [ 31.1, 56.4, 44.4, 13.1, 6.2 ] },
+				{ label: [ 'Row title 4', 'Sub row 5' ], classname: 'divider-heavy', values: [ 11.1, 52.4, 24.4, 21.1, 3.2 ] }
+			],
+			footnotes: [
+				'Footnote about the data in this table. This is sample data.',
+				nomisUI.checkbox({ label: 'Showing that HTML elements can be placed in table footers', value: 'test' })
+			]
+		}));
+</script>
+</body>
+</html>
