@@ -776,7 +776,8 @@ var nomisUI = function () {
         var id = options.id || 'table' + (tabid++);
         var tCols = options.data[0].values.length + 1; // +1 for row label
         var tColDepth = table_colDepth(options, 0);
-
+        if(tColDepth == 0) tColDepth = 1; // Must be at least a column depth of 1
+        
         var tbl = document.createElement('table');
         tbl.id = id;
         addCssClass(tbl, options.classname || 'ui-data-table');
