@@ -66,3 +66,9 @@ Summary of methods
 Dependencies
 ------------
 None.
+
+Copyright
+---------
+Copyright ©‎ 2019, Crown Copyright (Office for National Statistics)
+
+Released under MIT license, see [LICENSE](LICENSE) for details.
